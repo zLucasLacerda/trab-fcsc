@@ -1,0 +1,14 @@
+{
+  "estadoTransito": {
+    "via1": {
+      "fluxo": "Desconhecido",
+      "filaMetros": 0
+    },
+    "via2": {
+      "fluxo": "Desconhecido",
+      "filaMetros": 0
+    },
+    "pedestresAguardando": false,
+    "ultimaAtualizacao": null
+  }
+}
