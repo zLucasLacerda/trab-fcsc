@@ -1,0 +1,203 @@
+doctype html
+html(lang="pt-BR")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Painel Avançado de Controle de Trânsito
+    style.
+      body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background-color: #f0f2f5; color: #333; display: flex; justify-content: center; }
+      .container { max-width: 1000px; width: 100%; background: white; padding: 25px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); display: grid; grid-template-columns: 1fr 1.2fr; gap: 30px; }
+      
+      h1 { text-align: center; color: #1e293b; grid-column: span 2; margin-bottom: 5px; font-weight: 800; }
+      
+      /* Painel de Informações Detalhado */
+      .painel-dados { display: flex; flex-direction: column; gap: 15px; justify-content: center; }
+      .badge-escolar { text-align: center; padding: 12px; border-radius: 10px; font-weight: bold; font-size: 0.95em; transition: all 0.3s; text-transform: uppercase; letter-spacing: 0.5px; }
+      .escolar-ativo { background-color: #eff6ff; color: #1d4ed8; border: 2px solid #bfdbfe; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+      .escolar-inativo { background-color: #f8fafc; color: #64748b; border: 2px solid #e2e8f0; }
+      
+      .card { background: #f8fafc; border: 1px solid #e2e8f0; padding: 18px; border-radius: 12px; border-left: 6px solid #64748b; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+      .card.via-1-card { border-left-color: #3b82f6; }
+      .card.via-2-card { border-left-color: #10b981; }
+      .card h3 { margin: 0 0 10px 0; color: #0f172a; font-size: 1.15em; font-weight: 700; }
+      .detalhe-item { font-size: 0.95em; margin: 6px 0; color: #475569; display: flex; justify-content: space-between; border-bottom: 1px dashed #e2e8f0; padding-bottom: 4px; }
+      .detalhe-item:last-child { border-bottom: none; }
+      .detalhe-item strong { color: #0f172a; }
+      
+      .status { font-weight: bold; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; text-transform: uppercase; }
+      .status.com-pedestre { background-color: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; animation: pulse 2s infinite; }
+      .status.sem-pedestre { background-color: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+
+      /* --- MAQUETE DO CRUZAMENTO MAIS BONITO --- */
+      .mapa-cruzamento { position: relative; width: 420px; height: 420px; background-color: #68d391; border-radius: 16px; margin: auto; overflow: hidden; border: 5px solid #1e293b; box-shadow: 0 12px 24px rgba(0,0,0,0.15); }
+      
+      /* Calçadas Urbanas (Cinza Claro nas esquinas) */
+      .calcada { position: absolute; background-color: #cbd5e1; border: 2px solid #94a3b8; border-radius: 8px; width: 140px; height: 140px; }
+      .c-top-left { top: 0; left: 0; }
+      .c-top-right { top: 0; right: 0; }
+      .c-bottom-left { bottom: 0; left: 0; }
+      .c-bottom-right { bottom: 0; right: 0; }
+
+      /* Ruas (Asfalto Realista Escuro) */
+      .rua-vertical { position: absolute; left: 140px; width: 140px; height: 100%; background-color: #1e293b; }
+      .rua-horizontal { position: absolute; top: 140px; height: 140px; width: 100%; background-color: #1e293b; }
+      .cruzamento-centro { position: absolute; top: 140px; left: 140px; width: 140px; height: 140px; background-color: #273549; }
+      
+      /* Linhas de Retenção Brancas Contínuas */
+      .linha-parada-v1 { position: absolute; top: 140px; left: 120px; width: 6px; height: 70px; background-color: white; }
+      .linha-parada-v2 { position: absolute; top: 294px; left: 210px; width: 70px; height: 6px; background-color: white; }
+
+      /* Faixas de Pedestres Zebradas (Aparência Clássica) */
+      .faixa-pedestre-h { position: absolute; top: 140px; left: 60px; width: 50px; height: 140px; background: repeating-linear-gradient(to bottom, white, white 12px, transparent 12px, transparent 24px); opacity: 0.75; }
+      .faixa-pedestre-v { position: absolute; top: 294px; left: 140px; width: 140px; height: 50px; background: repeating-linear-gradient(to right, white, white 12px, transparent 12px, transparent 24px); opacity: 0.75; }
+
+      /* Estrutura de Poste do Semáforo Urbano */
+      .semaforo-container { position: absolute; display: flex; flex-direction: column; align-items: center; z-index: 10; }
+      .placa-via { background: #0f172a; color: #f8fafc; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px; border: 1px solid #fff; white-space: nowrap; margin-bottom: 2px; box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+      
+      .semaforo-corpo { background: #1e293b; padding: 6px; border-radius: 8px; display: flex; flex-direction: column; gap: 5px; box-shadow: 0 6px 12px rgba(0,0,0,0.4); border: 2px solid #475569; }
+      .luz { width: 16px; height: 16px; border-radius: 50%; background-color: #0f172a; opacity: 0.2; transition: all 0.2s ease-in-out; }
+      
+      /* Brilho de Alta Intensidade das Lâmpadas LED */
+      .luz.vermelha.ativa { background-color: #ef4444; box-shadow: 0 0 18px #ef4444, inset 0 0 4px #fff; opacity: 1; }
+      .luz.amarela.ativa { background-color: #eab308; box-shadow: 0 0 18px #eab308, inset 0 0 4px #fff; opacity: 1; }
+      .luz.verde.ativa { background-color: #22c55e; box-shadow: 0 0 18px #22c55e, inset 0 0 4px #fff; opacity: 1; }
+
+      /* Posicionamento Físico Inteligente dos Semáforos */
+      #bloco-v1 { top: 60px; left: 75px; } 
+      #bloco-v2 { top: 290px; left: 295px; }  
+
+      @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); opacity: 0.9; } 100% { transform: scale(1); } }
+
+  body
+    .container
+      h1 🚦 Centro de Monitoramento Viário Inteligente
+      
+      //- PAINEL ESQUERDO: Métricas Limpas e Detalhadas
+      .painel-dados
+        span#modo-escolar.badge-escolar Analisando Sistema...
+        
+        .card.via-1-card
+          h3 Via 1 (Eixo Horizontal)
+          .detalhe-item Fluxo de Veículos: <strong id="fluxo-via1">--</strong>
+          .detalhe-item Comprimento da Fila: <strong><span id="fila-via1">--</span> metros</strong>
+          .detalhe-item Status do Semáforo: <strong id="texto-estado-v1">--</strong>
+          
+        .card.via-2-card
+          h3 Via 2 (Eixo Vertical)
+          .detalhe-item Fluxo de Veículos: <strong id="fluxo-via2">--</strong>
+          .detalhe-item Comprimento da Fila: <strong><span id="fila-via2">--</span> metros</strong>
+          .detalhe-item Status do Semáforo: <strong id="texto-estado-v2">--</strong>
+
+        .card
+          h3 Sistema de Pedestres
+          .detalhe-item Solicitação de Travessia: <span id="pedestres" class="status sem-pedestre">--</span>
+
+      //- PAINEL DIREITO: Maquete Urbana Completa e Limpa
+      .mapa-cruzamento
+        //- Gramado de Fundo + Calçadas estruturadas
+        .calcada.c-top-left
+        .calcada.c-top-right
+        .calcada.c-bottom-left
+        .calcada.c-bottom-right
+        
+        //- Malha Asfáltica
+        .rua-vertical
+        .rua-horizontal
+        .cruzamento-centro
+        
+        //- Faixas de Pedestres Realistas
+        .faixa-pedestre-h
+        .faixa-pedestre-v
+        
+        //- Linhas de Parada Regulamentares
+        .linha-parada-v1
+        .linha-parada-v2
+        
+        //- Estrutura Semáforo Via 1
+        #bloco-v1.semaforo-container
+          .placa-via VIA 1
+          .semaforo-corpo
+            .luz.vermelha
+            .luz.amarela
+            .luz.verde
+
+        //- Estrutura Semáforo Via 2
+        #bloco-v2.semaforo-container
+          .placa-via VIA 2
+          .semaforo-corpo
+            .luz.vermelha
+            .luz.amarela
+            .luz.verde
+
+    script.
+      function obterTextoEstado(codigo) {
+        if (codigo === 1) return "🟢 VERDE (Fluxo Livre)";
+        if (codigo === 2) return "🟡 AMARELO (Atenção Aumentada)";
+        if (codigo === 3) return "🔴 VERMELHO (Retenção Total)";
+        return "Desconhecido";
+      }
+
+      function atualizarLuzesSemaforo(idContainer, estadoNumerico) {
+        const corpoSemaforo = document.getElementById(idContainer).querySelector('.semaforo-corpo');
+        const luzVermelha = corpoSemaforo.children[0];
+        const luzAmarela = corpoSemaforo.children[1];
+        const luzVerde = corpoSemaforo.children[2];
+
+        luzVermelha.classList.remove('ativa');
+        luzAmarela.classList.remove('ativa');
+        luzVerde.classList.remove('ativa');
+
+        if (estadoNumerico === 1) luzVerde.classList.add('ativa');
+        else if (estadoNumerico === 2) luzAmarela.classList.add('ativa');
+        else if (estadoNumerico === 3) luzVermelha.classList.add('ativa');
+      }
+
+      async function atualizarDados() {
+        try {
+          const resposta = await fetch('/api/transito/status');
+          const dados = await resposta.json();
+          
+          // 1. Modo Escolar
+          const elModoEscolar = document.getElementById('modo-escolar');
+          if (dados.modoEscolar) {
+            elModoEscolar.innerText = '🏫 MODO ESCOLAR ATIVO • VELOCIDADE MÁX: 30KM/H';
+            elModoEscolar.className = 'badge-escolar escolar-ativo';
+          } else {
+            elModoEscolar.innerText = '🚗 OPERAÇÃO URBANA PADRÃO';
+            elModoEscolar.className = 'badge-escolar escolar-inativo';
+          }
+
+          // 2. Via 1
+          if (dados.via1) {
+            document.getElementById('fluxo-via1').innerText = dados.via1.fluxo;
+            document.getElementById('fila-via1').innerText = dados.via1.filaMetros;
+            document.getElementById('texto-estado-v1').innerText = obterTextoEstado(dados.via1.estado);
+            atualizarLuzesSemaforo('bloco-v1', dados.via1.estado);
+          }
+
+          // 3. Via 2
+          if (dados.via2) {
+            document.getElementById('fluxo-via2').innerText = dados.via2.fluxo;
+            document.getElementById('fila-via2').innerText = dados.via2.filaMetros;
+            document.getElementById('texto-estado-v2').innerText = obterTextoEstado(dados.via2.estado);
+            atualizarLuzesSemaforo('bloco-v2', dados.via2.estado);
+          }
+
+          // 4. Pedestres
+          const elPedestres = document.getElementById('pedestres');
+          if (dados.pedestresAguardando) {
+            elPedestres.innerText = 'TRAVESSIA SOLICITADA';
+            elPedestres.className = 'status com-pedestre';
+          } else {
+            elPedestres.innerText = 'NENHUMA CHAMADA';
+            elPedestres.className = 'status sem-pedestre';
+          }
+          
+        } catch (erro) {
+          console.error("Erro ao sincronizar maquete viária:", erro);
+        }
+      }
+
+      atualizarDados();
+      setInterval(atualizarDados, 2000);
