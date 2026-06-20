@@ -28,42 +28,49 @@ html(lang="pt-BR")
       .status.com-pedestre { background-color: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; animation: pulse 2s infinite; }
       .status.sem-pedestre { background-color: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
 
-      /* --- MAQUETE DO CRUZAMENTO MAIS BONITO --- */
+      /* Elementos Interativos de Controle */
+      .acoes-painel { display: flex; flex-direction: column; gap: 10px; margin-top: 5px; }
+      .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: background 0.2s, transform 0.1s; font-size: 0.95em; text-transform: uppercase; letter-spacing: 0.3px; }
+      
+      /* MUDANÇA: Estilo do botão de pedestre mais suave */
+      .btn-pedestre { background-color: #475569; color: #f8fafc; box-shadow: 0 4px 6px rgba(71, 85, 105, 0.15); }
+      .btn-pedestre:hover { background-color: #334155; }
+      .btn-pedestre:active { transform: scale(0.98); }
+      
+      .form-agendamento { display: flex; gap: 8px; background: #f1f5f9; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; }
+      .form-agendamento input { flex: 1; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.9em; outline: none; background: white; }
+      .btn-agendar { background-color: #2563eb; color: white; width: auto; padding: 8px 16px; border-radius: 6px; }
+      .btn-agendar:hover { background-color: #1d4ed8; }
+
+      /* --- MAQUETE DO CRUZAMENTO --- */
       .mapa-cruzamento { position: relative; width: 420px; height: 420px; background-color: #68d391; border-radius: 16px; margin: auto; overflow: hidden; border: 5px solid #1e293b; box-shadow: 0 12px 24px rgba(0,0,0,0.15); }
       
-      /* Calçadas Urbanas (Cinza Claro nas esquinas) */
       .calcada { position: absolute; background-color: #cbd5e1; border: 2px solid #94a3b8; border-radius: 8px; width: 140px; height: 140px; }
       .c-top-left { top: 0; left: 0; }
       .c-top-right { top: 0; right: 0; }
       .c-bottom-left { bottom: 0; left: 0; }
       .c-bottom-right { bottom: 0; right: 0; }
 
-      /* Ruas (Asfalto Realista Escuro) */
       .rua-vertical { position: absolute; left: 140px; width: 140px; height: 100%; background-color: #1e293b; }
       .rua-horizontal { position: absolute; top: 140px; height: 140px; width: 100%; background-color: #1e293b; }
       .cruzamento-centro { position: absolute; top: 140px; left: 140px; width: 140px; height: 140px; background-color: #273549; }
       
-      /* Linhas de Retenção Brancas Contínuas */
       .linha-parada-v1 { position: absolute; top: 140px; left: 120px; width: 6px; height: 70px; background-color: white; }
       .linha-parada-v2 { position: absolute; top: 294px; left: 210px; width: 70px; height: 6px; background-color: white; }
 
-      /* Faixas de Pedestres Zebradas (Aparência Clássica) */
       .faixa-pedestre-h { position: absolute; top: 140px; left: 60px; width: 50px; height: 140px; background: repeating-linear-gradient(to bottom, white, white 12px, transparent 12px, transparent 24px); opacity: 0.75; }
       .faixa-pedestre-v { position: absolute; top: 294px; left: 140px; width: 140px; height: 50px; background: repeating-linear-gradient(to right, white, white 12px, transparent 12px, transparent 24px); opacity: 0.75; }
 
-      /* Estrutura de Poste do Semáforo Urbano */
       .semaforo-container { position: absolute; display: flex; flex-direction: column; align-items: center; z-index: 10; }
       .placa-via { background: #0f172a; color: #f8fafc; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px; border: 1px solid #fff; white-space: nowrap; margin-bottom: 2px; box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
       
       .semaforo-corpo { background: #1e293b; padding: 6px; border-radius: 8px; display: flex; flex-direction: column; gap: 5px; box-shadow: 0 6px 12px rgba(0,0,0,0.4); border: 2px solid #475569; }
       .luz { width: 16px; height: 16px; border-radius: 50%; background-color: #0f172a; opacity: 0.2; transition: all 0.2s ease-in-out; }
       
-      /* Brilho de Alta Intensidade das Lâmpadas LED */
       .luz.vermelha.ativa { background-color: #ef4444; box-shadow: 0 0 18px #ef4444, inset 0 0 4px #fff; opacity: 1; }
       .luz.amarela.ativa { background-color: #eab308; box-shadow: 0 0 18px #eab308, inset 0 0 4px #fff; opacity: 1; }
       .luz.verde.ativa { background-color: #22c55e; box-shadow: 0 0 18px #22c55e, inset 0 0 4px #fff; opacity: 1; }
 
-      /* Posicionamento Físico Inteligente dos Semáforos */
       #bloco-v1 { top: 60px; left: 75px; } 
       #bloco-v2 { top: 290px; left: 295px; }  
 
@@ -73,7 +80,6 @@ html(lang="pt-BR")
     .container
       h1 🚦 Centro de Monitoramento Viário Inteligente
       
-      //- PAINEL ESQUERDO: Métricas Limpas e Detalhadas
       .painel-dados
         span#modo-escolar.badge-escolar Analisando Sistema...
         
@@ -92,29 +98,30 @@ html(lang="pt-BR")
         .card
           h3 Sistema de Pedestres
           .detalhe-item Solicitação de Travessia: <span id="pedestres" class="status sem-pedestre">--</span>
+        
+        .acoes-painel
+          //- MUDANÇA: Texto alterado e classe de estilo suavizada aplicada
+          button.btn.btn-pedestre(onclick="solicitarTravessiaRua()") 🚶‍♂️ Solicitar Travessia
+          div.form-agendamento
+            input#input-tempo(type="number" placeholder="Minutos p/ Modo Escolar" min="1")
+            button.btn.btn-agendar(onclick="dispararModoEscolar()") Agendar
 
-      //- PAINEL DIREITO: Maquete Urbana Completa e Limpa
       .mapa-cruzamento
-        //- Gramado de Fundo + Calçadas estruturadas
         .calcada.c-top-left
         .calcada.c-top-right
         .calcada.c-bottom-left
         .calcada.c-bottom-right
         
-        //- Malha Asfáltica
         .rua-vertical
         .rua-horizontal
         .cruzamento-centro
         
-        //- Faixas de Pedestres Realistas
         .faixa-pedestre-h
         .faixa-pedestre-v
         
-        //- Linhas de Parada Regulamentares
         .linha-parada-v1
         .linha-parada-v2
         
-        //- Estrutura Semáforo Via 1
         #bloco-v1.semaforo-container
           .placa-via VIA 1
           .semaforo-corpo
@@ -122,7 +129,6 @@ html(lang="pt-BR")
             .luz.amarela
             .luz.verde
 
-        //- Estrutura Semáforo Via 2
         #bloco-v2.semaforo-container
           .placa-via VIA 2
           .semaforo-corpo
@@ -153,12 +159,36 @@ html(lang="pt-BR")
         else if (estadoNumerico === 3) luzVermelha.classList.add('ativa');
       }
 
+      async function solicitarTravessiaRua() {
+        try {
+          const res = await fetch('/api/transito/solicitar-travessia', { method: 'POST' });
+          if (res.ok) { atualizarDados(); }
+        } catch (erro) { console.error("Erro ao solicitar travessia:", erro); }
+      }
+
+      async function dispararModoEscolar() {
+        const input = document.getElementById('input-tempo');
+        const minutos = parseInt(input.value);
+        if (!minutos || minutos <= 0) return alert('Insira um tempo válido em minutos!');
+
+        try {
+          const res = await fetch('/api/transito/agendar-escolar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tempoMinutos: minutos })
+          });
+          if (res.ok) {
+            alert(`Modo escolar agendado com sucesso para os próximos ciclos!`);
+            input.value = '';
+          }
+        } catch (erro) { console.error("Erro ao agendar modo escolar:", erro); }
+      }
+
       async function atualizarDados() {
         try {
           const resposta = await fetch('/api/transito/status');
           const dados = await resposta.json();
           
-          // 1. Modo Escolar
           const elModoEscolar = document.getElementById('modo-escolar');
           if (dados.modoEscolar) {
             elModoEscolar.innerText = '🏫 MODO ESCOLAR ATIVO • VELOCIDADE MÁX: 30KM/H';
@@ -168,7 +198,6 @@ html(lang="pt-BR")
             elModoEscolar.className = 'badge-escolar escolar-inativo';
           }
 
-          // 2. Via 1
           if (dados.via1) {
             document.getElementById('fluxo-via1').innerText = dados.via1.fluxo;
             document.getElementById('fila-via1').innerText = dados.via1.filaMetros;
@@ -176,7 +205,6 @@ html(lang="pt-BR")
             atualizarLuzesSemaforo('bloco-v1', dados.via1.estado);
           }
 
-          // 3. Via 2
           if (dados.via2) {
             document.getElementById('fluxo-via2').innerText = dados.via2.fluxo;
             document.getElementById('fila-via2').innerText = dados.via2.filaMetros;
@@ -184,7 +212,6 @@ html(lang="pt-BR")
             atualizarLuzesSemaforo('bloco-v2', dados.via2.estado);
           }
 
-          // 4. Pedestres
           const elPedestres = document.getElementById('pedestres');
           if (dados.pedestresAguardando) {
             elPedestres.innerText = 'TRAVESSIA SOLICITADA';
@@ -200,4 +227,4 @@ html(lang="pt-BR")
       }
 
       atualizarDados();
-      setInterval(atualizarDados, 2000);
+      setInterval(atualizarDados, 1000);

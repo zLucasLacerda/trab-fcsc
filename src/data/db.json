@@ -1,17 +1,19 @@
 {
   "estadoTransito": {
     "via1": {
-      "fluxo": "Desconhecido",
-      "filaMetros": 0,
-      "estado": 2
+      "filaMetros": 15,
+      "estado": 1,
+      "fluxo": "Normal"
     },
     "via2": {
-      "fluxo": "Desconhecido",
-      "filaMetros": 0,
-      "estado": 3
+      "filaMetros": 20,
+      "estado": 3,
+      "fluxo": "Normal"
     },
     "pedestresAguardando": true,
-    "modoEscolar": false,
-    "ultimaAtualizacao": null
+    "modoEscolar": true,
+    "ultimaAtualizacao": "20/06/2026, 11:25:38",
+    "tempoEscolarAgendado": 540,
+    "solicitacaoPendente": true
   }
 }
