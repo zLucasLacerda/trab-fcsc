@@ -3,13 +3,17 @@ html(lang="pt-BR")
   head
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
-    title Painel Avançado de Controle de Trânsito
+    title Painel Advanced de Controle de Trânsito
     style.
-      body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background-color: #f0f2f5; color: #333; display: flex; justify-content: center; }
-      .container { max-width: 1000px; width: 100%; background: white; padding: 25px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); display: grid; grid-template-columns: 1fr 1.2fr; gap: 30px; }
+      body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background-color: #f0f2f5; color: #333; display: flex; flex-direction: column; align-items: center; }
+      .container { max-width: 1000px; width: 100%; background: white; padding: 25px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); display: grid; grid-template-columns: 1fr 1.2fr; gap: 30px; position: relative; }
       
       h1 { text-align: center; color: #1e293b; grid-column: span 2; margin-bottom: 5px; font-weight: 800; }
       
+      /* Alerta de Queda de Energia */
+      .alerta-energia { display: none; grid-column: span 2; background-color: #ef4444; color: white; text-align: center; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 1.1em; animation: piscarAlerta 1.5s infinite; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3); }
+      @keyframes piscarAlerta { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+
       /* Painel de Informações Detalhado */
       .painel-dados { display: flex; flex-direction: column; gap: 15px; justify-content: center; }
       .badge-escolar { text-align: center; padding: 12px; border-radius: 10px; font-weight: bold; font-size: 0.95em; transition: all 0.3s; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -32,7 +36,6 @@ html(lang="pt-BR")
       .acoes-painel { display: flex; flex-direction: column; gap: 10px; margin-top: 5px; }
       .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: background 0.2s, transform 0.1s; font-size: 0.95em; text-transform: uppercase; letter-spacing: 0.3px; }
       
-      /* MUDANÇA: Estilo do botão de pedestre mais suave */
       .btn-pedestre { background-color: #475569; color: #f8fafc; box-shadow: 0 4px 6px rgba(71, 85, 105, 0.15); }
       .btn-pedestre:hover { background-color: #334155; }
       .btn-pedestre:active { transform: scale(0.98); }
@@ -78,6 +81,8 @@ html(lang="pt-BR")
 
   body
     .container
+      #aviso-queda.alerta-energia ⚠️ ATENÇÃO: POSSÍVEL QUEDA DE ENERGIA NO LOCAL (Sem resposta do módulo há mais de 5 min)
+      
       h1 🚦 Centro de Monitoramento Viário Inteligente
       
       .painel-dados
@@ -100,7 +105,6 @@ html(lang="pt-BR")
           .detalhe-item Solicitação de Travessia: <span id="pedestres" class="status sem-pedestre">--</span>
         
         .acoes-painel
-          //- MUDANÇA: Texto alterado e classe de estilo suavizada aplicada
           button.btn.btn-pedestre(onclick="solicitarTravessiaRua()") 🚶‍♂️ Solicitar Travessia
           div.form-agendamento
             input#input-tempo(type="number" placeholder="Minutos p/ Modo Escolar" min="1")
@@ -157,6 +161,34 @@ html(lang="pt-BR")
         if (estadoNumerico === 1) luzVerde.classList.add('ativa');
         else if (estadoNumerico === 2) luzAmarela.classList.add('ativa');
         else if (estadoNumerico === 3) luzVermelha.classList.add('ativa');
+      }
+
+      function verificarPrazoAtualizacao(stringData) {
+        if (!stringData || stringData === "--") return;
+        
+        const partes = stringData.split(', ');
+        const dataPartes = partes[0].split('/');
+        const horaPartes = partes[1].split(':');
+        
+        const dataObjeto = new Date(
+          dataPartes[2],      
+          dataPartes[1] - 1,  
+          dataPartes[0],      
+          horaPartes[0],      
+          horaPartes[1],      
+          horaPartes[2]       
+        );
+
+        const agora = new Date();
+        const diferencaMilissegundos = agora - dataObjeto;
+        const diferencaMinutos = diferencaMilissegundos / 1000 / 60;
+
+        const elAviso = document.getElementById('aviso-queda');
+        if (diferencaMinutos > 5) {
+          elAviso.style.display = 'block';
+        } else {
+          elAviso.style.display = 'none';
+        }
       }
 
       async function solicitarTravessiaRua() {
@@ -219,6 +251,10 @@ html(lang="pt-BR")
           } else {
             elPedestres.innerText = 'NENHUMA CHAMADA';
             elPedestres.className = 'status sem-pedestre';
+          }
+
+          if (dados.ultimaAtualizacao) {
+            verificarPrazoAtualizacao(dados.ultimaAtualizacao);
           }
           
         } catch (erro) {

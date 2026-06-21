@@ -50,8 +50,7 @@ export const atualizarTransito = async (req, res, next) => {
 }
 
 export const obterStatus = (req, res) => {
-    const { ultimaAtualizacao, ...dadosFiltrados } = db.data.estadoTransito
-    return res.status(200).json(dadosFiltrados)
+    return res.status(200).json(db.data.estadoTransito)
 }
 
 export const agendarModoEscolar = async (req, res, next) => {
