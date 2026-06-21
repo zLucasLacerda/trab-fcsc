@@ -21,12 +21,12 @@ export const atualizarTransito = async (req, res, next) => {
         db.data.estadoTransito = {
             ...db.data.estadoTransito, 
             via1: {
-                filaMetros: 28 - via1.filaMetros,
+                filaMetros: (28 - via2.filaMetros) > 0 ? (38 - via2.filaMetros) : 0,
                 estado: via1.estado,
                 fluxo: calcularFluxo(via1.filaMetros)
             },
             via2: {
-                filaMetros:38 - via2.filaMetros,
+                filaMetros:(38 - via2.filaMetros) > 0 ? (38 - via2.filaMetros) : 0,
                 estado: via2.estado,
                 fluxo: calcularFluxo(via2.filaMetros)
             },
