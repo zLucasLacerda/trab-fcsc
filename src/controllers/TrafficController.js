@@ -9,10 +9,10 @@ export const atualizarTransito = async (req, res, next) => {
         let novoModoEscolar = db.data.estadoTransito.modoEscolar
         if (tempoParaEnviar > 0) { novoModoEscolar = true }
 
-        const calcularFluxo = (metros) => {
-            if (metros >= 80) return "Congestionado";
-            if (metros >= 40) return "Lento";
-            return "Normal";
+        const calcularFluxo = (metros,d) => {
+            if (metros >= 2*d/3) return "ALTO";
+            if (metros >= d/3) return "MÉDIO";
+            return "BAIXO";
         };
 
         // 1. Captura a solicitação pendente antes de limpá-la
