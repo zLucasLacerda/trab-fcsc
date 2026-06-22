@@ -48,14 +48,15 @@ html(lang="pt-BR")
       /* --- MAQUETE DO CRUZAMENTO --- */
       .mapa-cruzamento { position: relative; width: 420px; height: 420px; background-color: #68d391; border-radius: 16px; margin: auto; overflow: hidden; border: 5px solid #1e293b; box-shadow: 0 12px 24px rgba(0,0,0,0.15); box-sizing: border-box; }
       
-      .calcada { position: absolute; background-color: #cbd5e1; border: 2px solid #94a3b8; border-radius: 8px; width: 140px; height: 140px; box-sizing: border-box; }
+      /* Alterado para verde (#68d391) e removido as bordas para parecer uma área contínua de grama */
+      .calcada { position: absolute; background-color: #68d391; width: 140px; height: 140px; box-sizing: border-box; }
       .c-top-left { top: 0; left: 0; }
       .c-top-right { top: 0; right: 0; }
       .c-bottom-right { bottom: 0; right: 0; }
       
-      /* Canto inferior esquerdo configurado para centralizar o texto da Escola */
+      /* Canto inferior esquerdo com o texto da Escola */
       .c-bottom-left { bottom: 0; left: 0; display: flex; align-items: center; justify-content: center; }
-      .texto-escola { font-size: 14px; font-weight: 800; color: #475569; letter-spacing: 1px; text-transform: uppercase; border: 2px dashed #94a3b8; padding: 4px 8px; border-radius: 4px; background-color: rgba(255,255,255,0.3); user-select: none; }
+      .texto-escola { font-size: 14px; font-weight: 800; color: #1e293b; letter-spacing: 1px; text-transform: uppercase; border: 2px dashed #1e293b; padding: 4px 8px; border-radius: 4px; background-color: rgba(255,255,255,0.6); user-select: none; }
 
       .rua-vertical { position: absolute; left: 140px; width: 140px; height: 100%; background-color: #1e293b; }
       .rua-horizontal { position: absolute; top: 140px; height: 140px; width: 100%; background-color: #1e293b; }
@@ -123,7 +124,7 @@ html(lang="pt-BR")
         .calcada.c-top-left
         .calcada.c-top-right
         
-        // Canto inferior esquerdo contendo o texto da escola
+        // Canto inferior esquerdo com fundo verde integrado e placa Escola nítida
         .calcada.c-bottom-left
           span.texto-escola 🏫 Escola
           
