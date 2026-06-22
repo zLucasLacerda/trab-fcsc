@@ -10,10 +10,9 @@
       "estado": 3,
       "fluxo": "Normal"
     },
-    "pedestresAguardando": true,
-    "modoEscolar": true,
-    "ultimaAtualizacao": "20/06/2026, 11:25:38",
-    "tempoEscolarAgendado": 540,
-    "solicitacaoPendente": true
+    "pedestresAguardando": false,
+    "modoEscolar": false,
+    "ultimaAtualizacao": "20/06/2026, 11:08:18",
+    "tempoEscolarAgendado": 0
   }
 }

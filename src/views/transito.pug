@@ -46,13 +46,16 @@ html(lang="pt-BR")
       .btn-agendar:hover { background-color: #1d4ed8; }
 
       /* --- MAQUETE DO CRUZAMENTO --- */
-      .mapa-cruzamento { position: relative; width: 420px; height: 420px; background-color: #68d391; border-radius: 16px; margin: auto; overflow: hidden; border: 5px solid #1e293b; box-shadow: 0 12px 24px rgba(0,0,0,0.15); }
+      .mapa-cruzamento { position: relative; width: 420px; height: 420px; background-color: #68d391; border-radius: 16px; margin: auto; overflow: hidden; border: 5px solid #1e293b; box-shadow: 0 12px 24px rgba(0,0,0,0.15); box-sizing: border-box; }
       
-      .calcada { position: absolute; background-color: #cbd5e1; border: 2px solid #94a3b8; border-radius: 8px; width: 140px; height: 140px; }
+      .calcada { position: absolute; background-color: #cbd5e1; border: 2px solid #94a3b8; border-radius: 8px; width: 140px; height: 140px; box-sizing: border-box; }
       .c-top-left { top: 0; left: 0; }
       .c-top-right { top: 0; right: 0; }
-      .c-bottom-left { bottom: 0; left: 0; }
       .c-bottom-right { bottom: 0; right: 0; }
+      
+      /* Canto inferior esquerdo configurado para centralizar o texto da Escola */
+      .c-bottom-left { bottom: 0; left: 0; display: flex; align-items: center; justify-content: center; }
+      .texto-escola { font-size: 14px; font-weight: 800; color: #475569; letter-spacing: 1px; text-transform: uppercase; border: 2px dashed #94a3b8; padding: 4px 8px; border-radius: 4px; background-color: rgba(255,255,255,0.3); user-select: none; }
 
       .rua-vertical { position: absolute; left: 140px; width: 140px; height: 100%; background-color: #1e293b; }
       .rua-horizontal { position: absolute; top: 140px; height: 140px; width: 100%; background-color: #1e293b; }
@@ -61,8 +64,14 @@ html(lang="pt-BR")
       .linha-parada-v1 { position: absolute; top: 140px; left: 120px; width: 6px; height: 70px; background-color: white; }
       .linha-parada-v2 { position: absolute; top: 294px; left: 210px; width: 70px; height: 6px; background-color: white; }
 
-      .faixa-pedestre-h { position: absolute; top: 140px; left: 60px; width: 50px; height: 140px; background: repeating-linear-gradient(to bottom, white, white 12px, transparent 12px, transparent 24px); opacity: 0.75; }
-      .faixa-pedestre-v { position: absolute; top: 294px; left: 140px; width: 140px; height: 50px; background: repeating-linear-gradient(to right, white, white 12px, transparent 12px, transparent 24px); opacity: 0.75; }
+      /* --- CONFIGURAÇÃO DAS FAIXAS DE PEDESTRES --- */
+      .faixa-pedestre-h { position: absolute; width: 50px; height: 140px; background: repeating-linear-gradient(to bottom, white, white 12px, transparent 12px, transparent 24px); opacity: 0.75; }
+      .faixa-pedestre-v { position: absolute; width: 140px; height: 50px; background: repeating-linear-gradient(to right, white, white 12px, transparent 12px, transparent 24px); opacity: 0.75; }
+      
+      .faixa-left { top: 140px; left: 60px; }
+      .faixa-right { top: 140px; right: 60px; }
+      .faixa-top { top: 60px; left: 140px; }
+      .faixa-bottom { bottom: 60px; left: 140px; }
 
       .semaforo-container { position: absolute; display: flex; flex-direction: column; align-items: center; z-index: 10; }
       .placa-via { background: #0f172a; color: #f8fafc; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px; border: 1px solid #fff; white-space: nowrap; margin-bottom: 2px; box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
@@ -113,15 +122,21 @@ html(lang="pt-BR")
       .mapa-cruzamento
         .calcada.c-top-left
         .calcada.c-top-right
+        
+        // Canto inferior esquerdo contendo o texto da escola
         .calcada.c-bottom-left
+          span.texto-escola 🏫 Escola
+          
         .calcada.c-bottom-right
         
         .rua-vertical
         .rua-horizontal
         .cruzamento-centro
         
-        .faixa-pedestre-h
-        .faixa-pedestre-v
+        .faixa-pedestre-h.faixa-left
+        .faixa-pedestre-h.faixa-right
+        .faixa-pedestre-v.faixa-top
+        .faixa-pedestre-v.faixa-bottom
         
         .linha-parada-v1
         .linha-parada-v2

@@ -14,7 +14,7 @@ const defaultData = {
       "fluxo": "Normal"
     },
     "pedestresAguardando": false,
-    "modoEscolar": true,
+    "modoEscolar": false,
     "ultimaAtualizacao": "20/06/2026, 11:08:18",
     "tempoEscolarAgendado": 0
   }
