@@ -23,12 +23,12 @@ export const atualizarTransito = async (req, res, next) => {
             via1: {
                 filaMetros: (28 - via2.filaMetros) > 0 ? (38 - via2.filaMetros) : 0,
                 estado: via1.estado,
-                fluxo: calcularFluxo(via1.filaMetros)
+                fluxo: calcularFluxo(28 - via1.filaMetros,28)
             },
             via2: {
                 filaMetros:(38 - via2.filaMetros) > 0 ? (38 - via2.filaMetros) : 0,
                 estado: via2.estado,
-                fluxo: calcularFluxo(via2.filaMetros)
+                fluxo: calcularFluxo(38 - via2.filaMetros,38)
             },
             // Se o ESP32 enviar false (fim do ciclo), atualiza. Caso contrário, mantém true.
             pedestresAguardando: pedestresDoESP !== undefined ? pedestresDoESP : db.data.estadoTransito.pedestresAguardando,
